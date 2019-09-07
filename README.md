@@ -16,3 +16,5 @@ I thought it would look nicer.
 
 **What should I do now?**<br>
 Follow Chris and Dan, they're good people.
+
+GNU License (except for the stuff that BES owns)
