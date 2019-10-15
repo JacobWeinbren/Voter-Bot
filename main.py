@@ -391,13 +391,11 @@ with open("lines.txt", "w") as f:
 			items = []
 			b = 'a' * 280
 
-			while len("".join(a))+len("".join(b))+len("".join(c)) + 4> 280:
-				count += 1
+			while len("".join(a))+len("".join(b))+len("".join(c)) + 4 > 280:
 				items = random.sample(issues, 3)
 				b = "- " + items[0] + "\n" + "- " + items[1] + "\n" + "- " + items[2]
 
 			if a and b and c:
-				if len("".join(a))+len("".join(b))+len("".join(c)) + 4 < 280:
-					f.write("".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + "\n")
+				f.write("".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + "\n")
 		except:
 			pass
