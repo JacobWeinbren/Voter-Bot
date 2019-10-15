@@ -388,12 +388,10 @@ with open("lines.txt", "w") as f:
 				else:
 					c += " and " + party + " in 2017"
 
-			items = [1, 1]
-			b = []
-			for i in range(281):
-				b.append('a')
-			count = 0
-			while len("".join(a))+len("".join(b))+len("".join(c)) + 4> 280 and count < 100:
+			items = []
+			b = 'a' * 280
+
+			while len("".join(a))+len("".join(b))+len("".join(c)) + 4> 280:
 				count += 1
 				items = random.sample(issues, 3)
 				b = "- " + items[0] + "\n" + "- " + items[1] + "\n" + "- " + items[2]
