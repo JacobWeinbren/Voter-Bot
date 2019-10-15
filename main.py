@@ -14,10 +14,10 @@ countries = {
 }
 
 religions = {
-	1: '',
+	1: ' ',
 	2: '(CoE) ',
 	3: 'Catholic ',
-	4: '(CoS)',
+	4: '(CoS) ',
 	5: 'Methodist ',
 	6: 'Baptist ',
 	7: 'Protestant ',
@@ -29,7 +29,7 @@ religions = {
 	13: 'Sikh ',
 	14: 'Buddhist ',
 	15: 'Religious ',
-	16: '',
+	16: ' ',
 	17: 'Orthodox ',
 	18: 'Pentecostal ',
 	19: 'Evangelical '
