@@ -472,7 +472,7 @@ with open("lines.txt", "w") as f:
 			b = 'a' * 280
 
 			count = 0
-			while include_count("".join(a) + "".join(b) + "".join(c)) > 280 and count < 100:
+			while include_count("".join(a) + "".join(b) + "".join(c)) > 280 and count < 1000:
 				count += 1
 				items = random.sample(issues, 3)
 				b = "- " + items[0] + "\n" + "- " + items[1] + "\n" + "- " + items[2]
