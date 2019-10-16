@@ -37,7 +37,7 @@ religions = {
 	13: 'Sikh ',
 	14: 'Buddhist ',
 	15: 'religious ',
-	16: ' ',
+	16: '',
 	17: 'Orthodox ',
 	18: 'Pentecostal ',
 	19: 'Evangelical '
@@ -142,16 +142,16 @@ with open("lines.txt", "w") as f:
 		lr = float(person['leftRight'])
 		if lr < 5:
 			if lr < 2:
-				lr = 'Left Wing ⏪'
+				lr = 'Left ⏪'
 			else:
-				lr = 'Left Wing ◀️'
+				lr = 'Left ◀️'
 		elif lr == 5:
 			lr = 'Centre ⏸️'
 		elif lr > 5:
 			if lr >= 8:
-				lr = 'Right Wing ⏩'
+				lr = 'Right ⏩'
 			else:
-				lr = 'Right Wing ▶️'
+				lr = 'Right ▶️'
 		else:
 			lr = ''
 
