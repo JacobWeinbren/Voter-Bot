@@ -7,6 +7,14 @@ authorities = list(csv.DictReader(open("LA.csv")))
 for authority in authorities:
 	las[authority['PCON16CD']] = authority['PCON16NM']
 
+def is_emoji(c): return ord(c) > 0x2100
+def is_newline(c): return c == '\n'
+
+def include_count(tweet):
+	num_emoji = sum((is_emoji(c) and not is_newline(c)) for c in tweet)
+	num_normal = sum(not (is_emoji(c) or is_newline(c)) for c in tweet)
+	return num_emoji + num_normal
+
 countries = {
 	1: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
 	2: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
@@ -14,21 +22,21 @@ countries = {
 }
 
 religions = {
-	1: ' ',
+	1: 'irreligious ',
 	2: '(CoE) ',
 	3: 'Catholic ',
 	4: '(CoS) ',
 	5: 'Methodist ',
 	6: 'Baptist ',
-	7: 'Protestant ',
-	8: 'Protestant ',
-	9: 'Protestant ',
+	7: '(URC) ',
+	8: 'Free Presbyterian ',
+	9: 'Brethren ',
 	10: 'Jewish ',
 	11: 'Hindu ',
 	12: 'Muslim ',
 	13: 'Sikh ',
 	14: 'Buddhist ',
-	15: 'Religious ',
+	15: 'religious ',
 	16: ' ',
 	17: 'Orthodox ',
 	18: 'Pentecostal ',
@@ -134,21 +142,20 @@ with open("lines.txt", "w") as f:
 		lr = float(person['leftRight'])
 		if lr < 5:
 			if lr < 2:
-				lr = 'V Left Wing ⏪'
+				lr = 'Left Wing ⏪'
 			else:
-				lr = 'C Left ◀️'
+				lr = 'Left Wing ◀️'
 		elif lr == 5:
 			lr = 'Centre ⏸️'
 		elif lr > 5:
 			if lr >= 8:
-				lr = 'V Right Wing ⏩'
+				lr = 'Right Wing ⏩'
 			else:
-				lr = 'C Right ▶️'
+				lr = 'Right Wing ▶️'
 		else:
 			lr = ''
 
 		issues = []
-
 
 		try:
 			if int(person['socialCare']) in [4]:
@@ -162,50 +169,41 @@ with open("lines.txt", "w") as f:
 		except:
 			pass
 
-		if country == '🏴󠁧󠁢󠁳󠁣󠁴󠁿':
-			try:
-				if int(person['satDemScot']) in [3]:
-					issues.append('Satisified with Scottish Democracy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
-				if int(person['satDemScot']) in [4]:
-					issues.append('❗Satisified with Scottish Democracy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
-				if int(person['satDemScot']) in [2]:
-					issues.append('Dissatisfied with Scottish Democracy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
-				if int(person['satDemScot']) in [1]:
-					issues.append('❗Dissatisfied with Scottish Democracy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
-				if int(person['scottishness']) in [3,4,5,6,7]:
-					issues.append('Feel Strongly Scottish 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
-			except:
-				pass
+		try:
+			if int(person['satDemScot']) in [3]:
+				issues.append('Satisified with Scottish Democracy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
+			if int(person['satDemScot']) in [4]:
+				issues.append('❗Satisified with Scottish Democracy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
+			if int(person['satDemScot']) in [2]:
+				issues.append('Dissatisfied with Scottish Democracy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
+			if int(person['satDemScot']) in [1]:
+				issues.append('❗Dissatisfied with Scottish Democracy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
+		except:
+			pass
 
-		elif country == '🏴󠁧󠁢󠁷󠁬󠁳󠁿':
-			try:
-				if int(person['satDemWales']) in [3]:
-					issues.append('Satisified with Welsh Democracy 🏴󠁧󠁢󠁷󠁬󠁳󠁿')
-				if int(person['satDemWales']) in [4]:
-					issues.append('❗Satisified with Welsh Democracy 🏴󠁧󠁢󠁷󠁬󠁳󠁿')
-				if int(person['satDemWales']) in [2]:
-					issues.append('Dissatisfied with Welsh Democracy 🏴󠁧󠁢󠁷󠁬󠁳󠁿')
-				if int(person['satDemWales']) in [1]:
-					issues.append('❗Dissatisfied with Welsh Democracy 🏴󠁧󠁢󠁷󠁬󠁳󠁿')
-				if int(person['welshness']) in [3,4,5,6,7]:
-					issues.append('Feel Strongly Welsh 🏴󠁧󠁢󠁷󠁬󠁳󠁿')
-			except:
-				pass
+		try:
+			if int(person['satDemWales']) in [3]:
+				issues.append('Satisified with Welsh Democracy 🏴󠁧󠁢󠁷󠁬󠁳󠁿')
+			if int(person['satDemWales']) in [4]:
+				issues.append('❗Satisified with Welsh Democracy 🏴󠁧󠁢󠁷󠁬󠁳󠁿')
+			if int(person['satDemWales']) in [2]:
+				issues.append('Dissatisfied with Welsh Democracy 🏴󠁧󠁢󠁷󠁬󠁳󠁿')
+			if int(person['satDemWales']) in [1]:
+				issues.append('❗Dissatisfied with Welsh Democracy 🏴󠁧󠁢󠁷󠁬󠁳󠁿')
+		except:
+			pass
 
-		else:
-			try:
-				if int(person['satDemUK']) in [3]:
-					issues.append('Satisified with UK Democracy 🗳️')
-				if int(person['satDemUK']) in [4]:
-					issues.append('❗Satisified with UK Democracy 🗳️')
-				if int(person['satDemUK']) in [2]:
-					issues.append('Dissatisfied with UK Democracy 🗳️')
-				if int(person['satDemUK']) in [1]:
-					issues.append('❗Dissatisfied with UK Democracy 🗳️')
-				if int(person['englishness']) in [3,4,5,6,7]:
-					issues.append('Feel Strongly English 🏴󠁧󠁢󠁥󠁮󠁧󠁿')
-			except:
-				pass
+		try:
+			if int(person['satDemUK']) in [3]:
+				issues.append('Satisified with UK Democracy 🗳️')
+			if int(person['satDemUK']) in [4]:
+				issues.append('❗Satisified with UK Democracy 🗳️')
+			if int(person['satDemUK']) in [2]:
+				issues.append('Dissatisfied with UK Democracy 🗳️')
+			if int(person['satDemUK']) in [1]:
+				issues.append('❗Dissatisfied with UK Democracy 🗳️')
+		except:
+			pass
 
 		try:
 			if int(person['handleEUNegotiate']) in [4]:
@@ -219,14 +217,13 @@ with open("lines.txt", "w") as f:
 		except:
 			pass
 
-		if country == '🏴󠁧󠁢󠁳󠁣󠁴󠁿':
-			try:
-				if int(person['scotReferendumIntention']) in [0]:
-					issues.append('Oppose Scottish Indy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
-				if int(person['scotReferendumIntention']) in [1]:
-					issues.append('Support Scottish Indy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
-			except:
-				pass
+		try:
+			if int(person['scotReferendumIntention']) in [0]:
+				issues.append('Oppose Scottish Indy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
+			if int(person['scotReferendumIntention']) in [1]:
+				issues.append('Support Scottish Indy 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
+		except:
+			pass
 				
 		try:
 			if int(person['EUIntegrationSelf']) in [6, 7, 8]:
@@ -294,45 +291,45 @@ with open("lines.txt", "w") as f:
 			if int(person['euPriorityBalance']) in [0,1]:
 				issues.append('❗Brexit priority: Single Market access 🌐')
 			if int(person['euPriorityBalance']) in [7,8]:
-				issues.append('Brexit priority: Controlling immigration 🛃')
+				issues.append('Brexit priority: controlling immigration 🛃')
 			if int(person['euPriorityBalance']) in [9,10]:
-				issues.append('❗Brexit priority: Controlling immigration 🛃')
+				issues.append('❗Brexit priority: controlling immigration 🛃')
 		except:
 			pass
 
 		try:
 			if int(person['effectsEUFinance']) in [4]:
-				issues.append('Brexit: Improves my financial position 📈')
+				issues.append('Brexit: improves my financial position 📈')
 			if int(person['effectsEUFinance']) in [5]:
-				issues.append('❗Brexit: Improves my financial position 📈')
+				issues.append('❗Brexit: improves my financial position 📈')
 			if int(person['effectsEUFinance']) in [2]:
-				issues.append('Brexit: Worsens my financial position 📉')
+				issues.append('Brexit: worsens my financial position 📉')
 			if int(person['effectsEUFinance']) in [1]:
-				issues.append('❗Brexit: Worsens my financial position 📉')
+				issues.append('❗Brexit: worsens my financial position 📉')
 		except:
 			pass
 
 		try:
 			if int(person['euLeaveVoice']) == 4:
-				issues.append("Brexit: Improves Britain's influence 🇬🇧")
+				issues.append("Brexit: improves Britain's influence 🇬🇧")
 			if int(person['euLeaveVoice']) == 5:
-				issues.append("❗Brexit: Improves Britain's influence 🇬🇧")
+				issues.append("❗Brexit: improves Britain's influence 🇬🇧")
 			if int(person['euLeaveVoice']) == 2:
-				issues.append("Brexit: Reduces Britain's influence 🇬🇧")
+				issues.append("Brexit: reduces Britain's influence 🇬🇧")
 			if int(person['euLeaveVoice']) == 1:
-				issues.append("❗Brexit: Reduces Britain's influence 🇬🇧")
+				issues.append("❗Brexit: reduces Britain's influence 🇬🇧")
 		except:
 			pass
 
 		try:
 			if int(person['effectsEUNHS']) == 4:
-				issues.append('Brexit: Improves the NHS 🏥')
+				issues.append('Brexit: improves the NHS 🏥')
 			if int(person['effectsEUNHS']) == 5:
-				issues.append('❗Brexit: Improves the NHS 🏥')
+				issues.append('❗Brexit: improves the NHS 🏥')
 			if int(person['effectsEUNHS']) == 2:
-				issues.append('Brexit: Worsens the NHS 🏥')
+				issues.append('Brexit: worsens the NHS 🏥')
 			if int(person['effectsEUNHS']) == 1:
-				issues.append('❗Brexit: Worsens the NHS 🏥')
+				issues.append('❗Brexit: worsens the NHS 🏥')
 		except:
 			pass
 
@@ -348,12 +345,95 @@ with open("lines.txt", "w") as f:
 		except:
 			pass
 
+		"""
+		Latest Update
+		"""
+		try:
+			locations = []
+			if person['britishness'] != " " and int(person['britishness']) in [3, 4, 5, 6, 7]:
+				locations.append('British 🇬🇧')
+			if person['scottishness'] != " " and int(person['scottishness']) in [3, 4, 5, 6, 7]:
+				locations.append('Scottish 🏴󠁧󠁢󠁳󠁣󠁴󠁿')
+			if person['welshness'] != " " and int(person['welshness']) in [3, 4, 5, 6, 7]:
+				locations.append(' Welsh 🏴󠁧󠁢󠁷󠁬󠁳󠁿')
+			if person['englishness'] != " "  and int(person['englishness']) in [3, 4, 5, 6, 7]:
+				locations.append('English 🏴󠁧󠁢󠁥󠁮󠁧󠁿')
+			if person['europeanness'] != " " and int(person['europeanness']) in [3, 4, 5, 6, 7]:
+				locations.append('European 🇪🇺')
+			if len(locations) == 1:
+				issues.append('❗I feel ' + locations[0])
+			elif len(locations) == 2:
+				issues.append('❗I feel ' + locations[0] + ' and ' + locations[1])
+			elif len(locations) == 3:
+				issues.append('❗I feel ' + locations[0] +  ', ' + locations[1] + ' and ' + locations[2])
+		except:
+			pass
+
+		try:
+			if int(person['al4']) in [2]:
+				issues.append("Censorship is not necessary for our morals 🎬")
+			if int(person['al4']) in [1]:
+				issues.append("❗Censorship is not necessary for our morals 🎬")
+			if int(person['al4']) in [4]:
+				issues.append('Censorship is necessary for our morals 🎬')
+			if int(person['al4']) in [5]:
+				issues.append('❗Censorship is necessary for our morals 🎬')
+		except:
+			pass
+
+		try:
+			if int(person['natSecuritySelf']) in [6,7,8]:
+				issues.append("Civil liberties comes before fighting terror ⚠️")
+			if int(person['natSecuritySelf']) in [9,10]:
+				issues.append("❗Civil liberties comes before fighting terror ⚠️")
+			if int(person['natSecuritySelf']) in [2,3,4]:
+				issues.append('Fighting terror comes before civil liberties ⚠️')
+			if int(person['natSecuritySelfh']) in [0,1]:
+				issues.append('❗Fighting terror comes before civil liberties ⚠️')
+		except:
+			pass
+
+		try:
+			if int(person['al5']) in [2]:
+				issues.append("Criminal sentences should be looser 👮")
+			if int(person['al5']) in [1]:
+				issues.append("❗Criminal sentences should be looser 👮")
+			if int(person['al5']) in [4]:
+				issues.append('Criminal sentences should be stiffer 👮')
+			if int(person['al5']) in [5]:
+				issues.append('❗Criminal sentences should be stiffer 👮')
+		except:
+			pass
+
+		try:
+			if int(person['effectsEUWorkers']) == 4:
+				issues.append("Brexit: improves working conditions 🏢")
+			if int(person['effectsEUWorkers']) == 5:
+				issues.append("❗Brexit: improves working conditions 🏢")
+			if int(person['effectsEUWorkers']) == 2:
+				issues.append("Brexit: worsens working conditions 🏢")
+			if int(person['effectsEUWorkers']) == 1:
+				issues.append("❗Brexit: worsens working conditions 🏢")
+		except:
+			pass
+
+		try: 
+			if int(person['immigSelf']) in [6,7,8]:
+				issues.append("We should increase immigration 🛂")
+			if int(person['immigSelf']) in [9,10]:
+				issues.append("❗We should increase immigration 🛂")
+			if int(person['immigSelf']) in [2,3,4]:
+				issues.append("We should reduce immigration 🛂")
+			if int(person['immigSelf']) in [0,1]:
+				issues.append("❗We should reduce immigration 🛂")
+		except:
+			pass
+
 		try:
 			if int(person['small_mii_cat']):
 				issues.append("Britain's most important issue is " + issues_cat[int(person['mii_cat'])])
 		except:
 			pass
-
 
 		try:
 			sources = [int(person['infoSourceTV']), int(person['infoSourcePaper']), int(person['infoSourceRadio']), int(person['infoSourceInternet']), int(person['infoSourcePeople'])]
@@ -391,11 +471,16 @@ with open("lines.txt", "w") as f:
 			items = []
 			b = 'a' * 280
 
-			while len("".join(a))+len("".join(b))+len("".join(c)) + 4 > 280:
+			count = 0
+			while include_count("".join(a) + "".join(b) + "".join(c)) > 280 and count < 100:
+				count += 1
 				items = random.sample(issues, 3)
 				b = "- " + items[0] + "\n" + "- " + items[1] + "\n" + "- " + items[2]
 
 			if a and b and c:
 				f.write("".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + "\n")
+
+			if number % 500 == 0:
+				print number 
 		except:
 			pass
