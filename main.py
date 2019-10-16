@@ -1,19 +1,12 @@
 # -*- coding: utf-8 -*-
 import csv, random
+from unicodedata import normalize
 
 file = list(csv.DictReader(open("Voters.csv")))
 las = {}
 authorities = list(csv.DictReader(open("LA.csv")))
 for authority in authorities:
 	las[authority['PCON16CD']] = authority['PCON16NM']
-
-def is_emoji(c): return ord(c) > 0x2100
-def is_newline(c): return c == '\n'
-
-def include_count(tweet):
-	num_emoji = sum((is_emoji(c) and not is_newline(c)) for c in tweet)
-	num_normal = sum(not (is_emoji(c) or is_newline(c)) for c in tweet)
-	return num_emoji + num_normal
 
 countries = {
 	1: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
@@ -29,7 +22,7 @@ religions = {
 	5: 'Methodist ',
 	6: 'Baptist ',
 	7: '(URC) ',
-	8: 'Free Presbyterian ',
+	8: '(FPC) ',
 	9: 'Brethren ',
 	10: 'Jewish ',
 	11: 'Hindu ',
@@ -120,6 +113,14 @@ issues_cat = {
 	47: "the EU referendum 🇪🇺"
 }
 
+housing = {
+	1: 'home owner',
+	2: 'home owner',
+	3: 'social renter',
+	4: 'private renter',
+	5: 'social renter'
+}
+
 genders = {1: 'man', 2: 'woman'}
 values = {}
 
@@ -207,13 +208,13 @@ with open("lines.txt", "w") as f:
 
 		try:
 			if int(person['handleEUNegotiate']) in [4]:
-				issues.append('Satisified with Government Handling Brexit 🇪🇺')
+				issues.append('Satisified with Government handling Brexit 🇪🇺')
 			if int(person['handleEUNegotiate']) in [5]:
-				issues.append('❗Satisified with Government Handling Brexit 🇪🇺')
+				issues.append('❗Satisified with Government handling Brexit 🇪🇺')
 			if int(person['handleEUNegotiate']) in [2]:
-				issues.append('Dissatisfied with Government Handling Brexit 🇪🇺')
+				issues.append('Dissatisfied with Government handling Brexit 🇪🇺')
 			if int(person['handleEUNegotiate']) in [1]:
-				issues.append('❗Dissatisfied with Government Handling Brexit 🇪🇺')
+				issues.append('❗Dissatisfied with Government handling Brexit 🇪🇺')
 		except:
 			pass
 
@@ -360,24 +361,23 @@ with open("lines.txt", "w") as f:
 				locations.append('English 🏴󠁧󠁢󠁥󠁮󠁧󠁿')
 			if person['europeanness'] != " " and int(person['europeanness']) in [3, 4, 5, 6, 7]:
 				locations.append('European 🇪🇺')
+			random.shuffle(locations)
 			if len(locations) == 1:
 				issues.append('❗I feel ' + locations[0])
-			elif len(locations) == 2:
+			elif len(locations) > 1:
 				issues.append('❗I feel ' + locations[0] + ' and ' + locations[1])
-			elif len(locations) == 3:
-				issues.append('❗I feel ' + locations[0] +  ', ' + locations[1] + ' and ' + locations[2])
 		except:
 			pass
 
 		try:
 			if int(person['al4']) in [2]:
-				issues.append("Censorship is not necessary for our morals 🎬")
+				issues.append("Censorship is not necessary for morality 🎬")
 			if int(person['al4']) in [1]:
-				issues.append("❗Censorship is not necessary for our morals 🎬")
+				issues.append("❗Censorship is not necessary for morality 🎬")
 			if int(person['al4']) in [4]:
-				issues.append('Censorship is necessary for our morals 🎬')
+				issues.append('Censorship is necessary for morality 🎬')
 			if int(person['al4']) in [5]:
-				issues.append('❗Censorship is necessary for our morals 🎬')
+				issues.append('❗Censorship is necessary for morality 🎬')
 		except:
 			pass
 
@@ -429,20 +429,25 @@ with open("lines.txt", "w") as f:
 		except:
 			pass
 
+		"""/ends"""
+
 		try:
 			if int(person['small_mii_cat']):
 				issues.append("Britain's most important issue is " + issues_cat[int(person['mii_cat'])])
 		except:
 			pass
 
-		try:
+		if person['profile_past_vote_2017'] != " " and person['onscode'] != " " and len(issues) > 2:
 			sources = [int(person['infoSourceTV']), int(person['infoSourcePaper']), int(person['infoSourceRadio']), int(person['infoSourceInternet']), int(person['infoSourcePeople'])]
 			sources = [x if x != 999 else 1 for x in sources]
 			source = media[sources.index(max(sources))]
 			if source == '🗞️' and int(person['profile_newspaper']) in papers.keys():
 				source += " (" + papers[int(person['profile_newspaper'])] + ")"
 
-			a = ["I'm a ", str(age), " year old " + religion + gender +", ", education, ". ", las[person['onscode']], " ", country + ". News ", source]
+			if person['housing'] != " " and int(person['housing']) in [1,2,3,4,5]:
+				a = "I'm a " + str(age) + " year old " + religion + gender + ", " + housing[int(person['housing'])] + ", " + education, ". " + las[person['onscode']] + " ", country + ". News " + source
+			else:
+				a = "I'm a " + str(age) + " year old " + religion + gender +  ", " + education, ". " + las[person['onscode']] + " ", country + ". News " + source
 			
 			if int(person['euRefVote']) == 1:
 				c = lr + " I voted Leave in 2016"
@@ -472,15 +477,13 @@ with open("lines.txt", "w") as f:
 			b = 'a' * 280
 
 			count = 0
-			while include_count("".join(a) + "".join(b) + "".join(c)) > 280 and count < 1000:
+			while len(normalize("NFC", unicode("".join(a) + "".join(b) + "".join(c), 'utf-8'))) > 280 and count < 2000:
 				count += 1
 				items = random.sample(issues, 3)
 				b = "- " + items[0] + "\n" + "- " + items[1] + "\n" + "- " + items[2]
 
-			if a and b and c:
+			if len(normalize("NFC", unicode("".join(a) + "".join(b) + "".join(c), 'utf-8'))) < 280:
 				f.write("".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + "\n")
+				print number
 
-			if number % 500 == 0:
-				print number 
-		except:
-			pass
+		
