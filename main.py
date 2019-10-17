@@ -150,18 +150,18 @@ with open("lines.txt", "w") as f:
 			lr = int(person['leftRight'])
 			if lr < 5:
 				if lr in [0, 1]:
-					lr = 'Left ⏪'
+					lr = 'Left ⏪ '
 				if lr in [2, 3,4]:
-					lr = 'Left ◀️'
+					lr = 'Left ◀️ '
 				else:
 					lr = ''
 			elif lr == 5:
 				lr = 'Centre ⏸️'
 			elif lr > 5:
 				if lr in [6, 7, 8]:
-					lr = 'Right ⏩'
+					lr = 'Right ⏩ '
 				if lr in [9, 10]:
-					lr = 'Right ▶️'
+					lr = 'Right ▶️ '
 				else:
 					lr = ''
 			else:
@@ -461,13 +461,13 @@ with open("lines.txt", "w") as f:
 					a = "I'm a " + str(age) + " year old " + religion + gender +  ", " + education, ". " + las[person['onscode']] + " ", country + ". News " + source
 				
 				if int(person['euRefpastVote']) == 1:
-					c = lr + " I voted Leave in 2016"
+					c = lr + "I voted Leave in 2016"
 				if int(person['euRefpastVote']) == 0:
-					c = lr + " I voted Remain in 2016"
+					c = lr + "I voted Remain in 2016"
 				if int(person['euRefpastVote']) == 2:
-					c = lr + " I didn't vote in 2016"
+					c = lr + "I didn't vote in 2016"
 				if int(person['euRefpastVote']) == 99:
-					c = lr + " I didn't vote in 2016"
+					c = lr + "I didn't vote in 2016"
 				
 				turnout = int(person['profile_turnout_2017'])
 				vote = int(person['profile_past_vote_2017'])
