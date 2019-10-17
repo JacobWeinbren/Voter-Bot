@@ -132,7 +132,7 @@ with open("lines.txt", "w") as f:
 		
 		person = file[number]
 
-		if float(person['wt_new_W13']) > random.uniform(0.6, 1.6):
+		if float(person['wt_new_W13']) > random.uniform(0.7, 1.5):
 			if int(person['education']) in [13, 14, 15, 16, 17, 18]:
 				education = 'university-educated'
 			else:
