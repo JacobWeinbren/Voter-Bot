@@ -151,7 +151,7 @@ with open("lines.txt", "w") as f:
 			if lr < 5:
 				if lr in [0, 1]:
 					lr = 'Left ⏪ '
-				if lr in [2, 3,4]:
+				elif lr in [2, 3,4]:
 					lr = 'Left ◀️ '
 				else:
 					lr = ''
@@ -159,9 +159,9 @@ with open("lines.txt", "w") as f:
 				lr = 'Centre ⏸️'
 			elif lr > 5:
 				if lr in [6, 7, 8]:
-					lr = 'Right ⏩ '
-				if lr in [9, 10]:
 					lr = 'Right ▶️ '
+				elif lr in [9, 10]:
+					lr = 'Right ⏩ '
 				else:
 					lr = ''
 			else:
