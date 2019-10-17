@@ -371,13 +371,13 @@ with open("lines.txt", "w") as f:
 
 		try:
 			if int(person['al4']) in [2]:
-				issues.append("Censorship is not necessary for morality 🎬")
+				issues.append("Censorship is not necessary to uphold morality 🎬")
 			if int(person['al4']) in [1]:
-				issues.append("❗Censorship is not necessary for morality 🎬")
+				issues.append("❗Censorship is not necessary to uphold morality 🎬")
 			if int(person['al4']) in [4]:
-				issues.append('Censorship is necessary for morality 🎬')
+				issues.append('Censorship is necessary to uphold morality 🎬')
 			if int(person['al4']) in [5]:
-				issues.append('❗Censorship is necessary for morality 🎬')
+				issues.append('❗Censorship is necessary to uphold morality 🎬')
 		except:
 			pass
 
@@ -477,12 +477,12 @@ with open("lines.txt", "w") as f:
 			b = 'a' * 280
 
 			count = 0
-			while len(normalize("NFC", unicode("".join(a) + "".join(b) + "".join(c), 'utf-8'))) > 280 and count < 2000:
+			while len(normalize("NFC", unicode("".join(a) + "\n\n" + "".join(b) + "\n\n" + "".join(c), 'utf-8'))) > 280 and count < 2000:
 				count += 1
 				items = random.sample(issues, 3)
 				b = "- " + items[0] + "\n" + "- " + items[1] + "\n" + "- " + items[2]
 
-			if len(normalize("NFC", unicode("".join(a) + "".join(b) + "".join(c), 'utf-8'))) < 280:
+			if len(normalize("NFC", unicode("".join(a) + "\n\n" + "".join(b) + "\n\n" + "".join(c), 'utf-8'))) < 280:
 				f.write("".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + "\n")
 				print number
 
