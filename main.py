@@ -128,8 +128,9 @@ with open("lines.txt", "w") as f:
 	total_n = list(range(len(file)))
 	random.shuffle(total_n)
 	for number in total_n:
+		print number
 		person = file[number]
-		if float(person['wt_new_W13']) / 3 < random.uniform(0, 1):
+		if float(person['wt_new_W13']) / 2 < random.uniform(0, 1):
 			if int(person['education']) in [13, 14, 15, 16, 17, 18]:
 				education = 'university-educated'
 			else:
