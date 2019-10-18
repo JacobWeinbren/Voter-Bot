@@ -156,7 +156,7 @@ with open("lines.txt", "w") as f:
 				else:
 					lr = ''
 			elif lr == 5:
-				lr = 'Centre ⏸️'
+				lr = 'Centre ⏸️ '
 			elif lr > 5:
 				if lr in [6, 7, 8]:
 					lr = 'Right ▶️ '
