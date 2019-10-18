@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 import csv, random
 from unicodedata import normalize
+import json
 
 file = list(csv.DictReader(open("Voters.csv")))
 las = {}
 authorities = list(csv.DictReader(open("LA.csv")))
 for authority in authorities:
 	las[authority['PCON16CD']] = authority['PCON16NM']
+
+with open('results.txt', 'r') as tweets:
+	tweet_voters = json.load(tweets)
 
 countries = {
 	1: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
@@ -138,7 +142,7 @@ with open("lines.txt", "w") as f:
 			education = 'non-university-educated'
 
 		age = int(person['age'])
-		print age
+
 		try:
 			religion = religions[int(person['profile_religion'])]
 		except:
@@ -492,5 +496,11 @@ with open("lines.txt", "w") as f:
 				items = random.sample(issues, 3)
 				b = "- " + items[0] + "\n" + "- " + items[1] + "\n" + "- " + items[2]
 
-			if len(normalize("NFC", unicode("".join(a) + "\n\n" + "".join(b) + "\n\n" + "".join(c), 'utf-8'))) < 280:
-				f.write("".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + "\n")
+			allowed = True
+			for voter in tweet_voters:
+				if voter['age'] == age and voter['gender'] == gender and voter['loc'] == las[person['onscode']] and voter['uni'] == education:
+					allowed = False
+
+			if allowed:
+				if len(normalize("NFC", unicode("".join(a) + "\n\n" + "".join(b) + "\n\n" + "".join(c), 'utf-8'))) < 280:
+					f.write("".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + "\n")
