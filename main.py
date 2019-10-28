@@ -491,7 +491,7 @@ with open("lines.txt", "w") as f:
 			b = 'a' * 280
 
 			count = 0
-			while len(normalize("NFC", unicode("".join(a) + "\n\n" + "".join(b) + "\n\n" + "".join(c), 'utf-8'))) > 280 and count < 100:
+			while len(normalize("NFC", unicode("".join(a) + "\n\n" + "".join(b) + "\n\n" + "".join(c), 'utf-8'))) > 280 and count < 1000:
 				count += 1
 				items = random.sample(issues, 3)
 				b = "- " + items[0] + "\n" + "- " + items[1] + "\n" + "- " + items[2]
@@ -502,16 +502,21 @@ with open("lines.txt", "w") as f:
 					allowed = False
 
 			if allowed:
-				if age < 35:
-					young.append("".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + "\n")
-				if age >= 35 and age < 55: 
-					middle.append("".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + "\n")
-				if age >= 55: 
-					older.append("".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + "\n")
+				result = "".join(a) + "\n" + "".join(b) + "\n" + "".join(c) + '\n'
+				if len(normalize("NFC", unicode(result, 'utf-8'))) + 2 <= 280:
+					if age < 35:
+						young.append(result)
+					if age >= 35 and age < 55: 
+						middle.append(result)
+					if age >= 55: 
+						older.append(result)
 
 	choices = [young, middle, older]
 	for index in range(len(young)):
 		random.shuffle(choices)
 		f.write(choices[0][index])
+		print choices[0][index].split(' ')[2]
 		f.write(choices[1][index])
+		print choices[1][index].split(' ')[2]
 		f.write(choices[2][index])
+		print choices[2][index].split(' ')[2]

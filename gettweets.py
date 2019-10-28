@@ -79,3 +79,6 @@ for tweet in file:
 
 with open('results.txt', 'w') as file:
 	json.dump(voters,file)
+
+for voter in voters:
+	print voter['age']
